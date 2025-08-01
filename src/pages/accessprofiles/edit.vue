@@ -51,8 +51,8 @@ export default {
   data() {
     return {
       permissions: {
-        update: this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'U' }) && this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_MODULE': 'CRUD' }),
-        delete: this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'D' }) && this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_MODULE': 'D' }),
+        update: this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'U' }) && this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_MODULE': 'CRUD' }),
+        delete: this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'D' }) && this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_MODULE': 'D' }),
       },
       modules: [],
       selectedModules: [],
@@ -100,7 +100,7 @@ export default {
 
   methods: {
     async save() {
-      if (!this.$toolcase.utils.validateForm(this.input, this.inputError)) return false;
+      if (!this.$toolcase.services.utils.validateForm(this.input, this.inputError)) return false;
 
       this.$emit('load', 'save-accessprofile');
       try {
@@ -111,13 +111,13 @@ export default {
         const modulesResponse = await this.$http.put(`${this.$iam.ENDPOINTS.PROFILES.MODULE}/${this.$route.params.key}`, this.modulesSelected);
 
         this.$router.push('/iam/access-profiles');
-        this.$toolcase.utils.notify({
+        this.$toolcase.services.utils.notify({
           message: "Os dados do perfil de acesso foram salvos com sucesso.",
           type: 'positive',
           position: 'top-right'
         });
       } catch (error) {
-        this.$toolcase.utils.notifyError(error);
+        this.$toolcase.services.utils.notifyError(error);
         console.error("An error has occurred while saving the access profile.", error);
       } finally {
         this.$emit('loaded', 'save-accessprofile');
@@ -132,14 +132,14 @@ export default {
       try {
         await this.$http.delete(`${this.$iam.ENDPOINTS.PROFILES.PROFILE}/${this.$route.params.key}`);
 
-        this.$toolcase.utils.notify({
+        this.$toolcase.services.utils.notify({
           message: 'O perfil foi excluído com sucesso',
           type: 'positive',
           position: 'top-right'
         })
         this.$router.push('/iam/access-profiles');
       } catch (error) {
-        this.$toolcase.utils.notifyError(error);
+        this.$toolcase.services.utils.notifyError(error);
         console.error("An error has occurred while removing the access profile.", error);
       } finally {
         this.$emit('loaded', 'accessprofile-remove');
@@ -159,7 +159,7 @@ export default {
           }
         }
       } catch (error) {
-        this.$toolcase.utils.notifyError(error);
+        this.$toolcase.services.utils.notifyError(error);
         console.error("An error has occurred while retrieving the modules.", error);
       }
     },
@@ -176,7 +176,7 @@ export default {
         await this.getModules();
       } catch (error) {
         if (error.response.status == 404) {
-          this.$toolcase.utils.notify({
+          this.$toolcase.services.utils.notify({
             message: 'Perfil de acesso não encontrado.',
             type: 'negative',
             position: 'top-right'
@@ -184,7 +184,7 @@ export default {
           this.$router.push('/iam/access-profiles');
           return;
         }
-        this.$toolcase.utils.notifyError(error);
+        this.$toolcase.services.utils.notifyError(error);
         console.error("An error has occurred on the attempt to retrieve user's data.", error);
       } finally {
         this.$emit('loaded', 'profile-data');
@@ -193,10 +193,10 @@ export default {
   },
 
   async mounted() {
-    await this.$iam.auth.authenticate();
+    await this.$iam.services.auth.authenticate();
 
-    if (!this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'R' }) ||
-      !this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_MODULE': 'R' })) this.$router.push('/forbidden');
+    if (!this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'R' }) ||
+      !this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_MODULE': 'R' })) this.$router.push('/forbidden');
 
     this.getProfileData()
   },

@@ -104,7 +104,7 @@ export default {
 
     checkPassConfirmation() {
       if (this.form.ds_password != this.form.confirm_pass) {
-        this.$toolcase.utils.notify({
+        this.$toolcase.services.utils.notify({
           message: "As senhas não coincidem",
           type: 'negative',
           position: 'top-right'
@@ -120,7 +120,7 @@ export default {
     },
 
     async save() {
-      if (!this.$toolcase.utils.validateForm(this.form, this.formError)) return;
+      if (!this.$toolcase.services.utils.validateForm(this.form, this.formError)) return;
       if (!this.checkPassConfirmation()) return;
 
       const payload = {
@@ -132,7 +132,7 @@ export default {
         this.done = true;
       } catch (error) {
         this.error = true;
-        this.$toolcase.utils.notifyError(error);
+        this.$toolcase.services.utils.notifyError(error);
         console.error(error);
       }
     },
@@ -143,7 +143,7 @@ export default {
       } catch (error) {
         this.error = true;
         if (error.response.status != 401) {
-          this.$toolcase.utils.notifyError(error);
+          this.$toolcase.services.utils.notifyError(error);
           console.error(error);
         }
       }

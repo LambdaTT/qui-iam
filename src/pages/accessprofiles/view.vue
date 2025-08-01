@@ -88,7 +88,7 @@ export default {
         .then(() => this.getModules())
         .catch((error) => {
           if (error.response.status == 404) {
-            this.$toolcase.utils.notify({
+            this.$toolcase.services.utils.notify({
               message: 'Perfil de acesso não encontrado.',
               type: 'negative',
               position: 'top-right'
@@ -96,7 +96,7 @@ export default {
             this.$router.push('/iam/access-profiles');
             return;
           }
-          this.$toolcase.utils.notifyError(error);
+          this.$toolcase.services.utils.notifyError(error);
           console.error("An error has occurred on the attempt to retrieve user's data.", error);
         })
         .finally(() => {
@@ -106,9 +106,9 @@ export default {
   },
 
   async mounted() {
-    await this.$iam.auth.authenticate(this);
-    if (!this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'R' }) ||
-      !this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_MODULE': 'R' })) this.$router.push('/forbidden');
+    await this.$iam.services.auth.authenticate(this);
+    if (!this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'R' }) ||
+      !this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_MODULE': 'R' })) this.$router.push('/forbidden');
 
     this.getProfileData();
   },

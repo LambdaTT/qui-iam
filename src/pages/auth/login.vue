@@ -119,7 +119,7 @@ export default {
       }
 
       if (isInvalid) {
-        this.$toolcase.utils.notify({
+        this.$toolcase.services.utils.notify({
           message: "Preencha o formulário corretamente",
           type: "negative",
           position: 'top-right'
@@ -155,7 +155,7 @@ export default {
         }, 100);
       } catch (error) {
         console.error(error);
-        this.$toolcase.utils.notifyError(error);
+        this.$toolcase.services.utils.notifyError(error);
 
         await this.$http.delete(this.$iam.ENDPOINTS.AUTH.LOGOUT)
         localStorage.removeItem('authtoken');
@@ -188,7 +188,7 @@ export default {
 
       } catch (error) {
         if (error.response.status != 401) {
-          this.$toolcase.utils.notifyError(error);
+          this.$toolcase.services.utils.notifyError(error);
           console.error("An error has occurred on the attempt to perform automatic login.", error);
         }
 
@@ -213,13 +213,13 @@ export default {
 
       try {
         this.$http.post(this.$iam.ENDPOINTS.USERS.RESET_PASS.REQUEST, { ds_email: this.recoveryEmail })
-        this.$toolcase.utils.notify({
+        this.$toolcase.services.utils.notify({
           message: 'Um e-mail, contendo instruções de recuperação foi enviado ao endereço fornecido.',
           type: 'positive',
           position: 'top-right'
         })
       } catch (error) {
-        this.$toolcase.utils.notifyError(error);
+        this.$toolcase.services.utils.notifyError(error);
         console.error("An error has occurred on the attempt to recovery password.", error);
       } finally {
         this.$q.loading.hide();

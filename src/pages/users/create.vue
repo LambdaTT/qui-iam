@@ -59,7 +59,7 @@ export default {
   methods: {
     validateForm() {
       if (this.inputUser.selected_profiles.length < 1) {
-        this.$toolcase.utils.notify({
+        this.$toolcase.services.utils.notify({
           message: "Selecione ao menos 1 perfil de acesso.",
           type: "negative",
           position: 'top-right'
@@ -90,14 +90,14 @@ export default {
       return this.$http.post(this.$iam.ENDPOINTS.USERS.USER, data)
         .then((response) => {
           this.$router.push(`/iam/users/edit/${response.data.ds_key}`);
-          this.$toolcase.utils.notify({
+          this.$toolcase.services.utils.notify({
             message: "O novo usuário foi criado com sucesso.",
             type: 'positive',
             position: 'top-right'
           });
         })
         .catch((error) => {
-          this.$toolcase.utils.notifyError(error);
+          this.$toolcase.services.utils.notifyError(error);
           console.error(error);
         })
         .finally(() => {
@@ -115,7 +115,7 @@ export default {
           }))
         })
         .catch((error) => {
-          this.$toolcase.utils.notifyError(error);
+          this.$toolcase.services.utils.notifyError(error);
           console.error(error);
         })
     }
@@ -123,10 +123,10 @@ export default {
 
   async mounted() {
     this.$emit('load', 'data');
-    await this.$iam.auth.authenticate(this);
-    if (!this.$iam.permissions.validatePermissions({ 'IAM_USER': 'C' }) ||
-      !this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'R' }) ||
-      !this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_USER': 'CUD' })) this.$router.push('/forbidden');
+    await this.$iam.services.auth.authenticate(this);
+    if (!this.$iam.services.permissions.validatePermissions({ 'IAM_USER': 'C' }) ||
+      !this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'R' }) ||
+      !this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_USER': 'CUD' })) this.$router.push('/forbidden');
 
     await this.listProfiles();
     this.$emit('loaded', 'data');

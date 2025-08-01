@@ -1,8 +1,20 @@
 // AUTO GENERATED - do not edit by hand
 
+// => importing ENDPOINTS:
+import ENDPOINTS from './ENDPOINTS.js'
+
+// => importing services:
+import auth from './services/auth.js'
+import permissions from './services/permissions.js'
+
+// => importing components:
 import AuditInfo from './components/AuditInfo.vue'
 import HelloWorld from './components/HelloWorld.vue'
 import UserInfo from './components/UserInfo.vue'
+
+export function registerEndpoints(app) {
+  app.config.globalProperties.$iam.ENDPOINTS = ENDPOINTS
+}
 
 export function registerComponents(app) {
   app.component('AuditInfo', AuditInfo)
@@ -10,10 +22,9 @@ export function registerComponents(app) {
   app.component('UserInfo', UserInfo)
 }
 
-export async function registerServices(app) {
-  app.config.globalProperties.$iam['ENDPOINTS'] = (await import('./services/ENDPOINTS.js')).default || (await import('./services/ENDPOINTS.js'))
-  app.config.globalProperties.$iam['auth'] = (await import('./services/auth.js')).default || (await import('./services/auth.js'))
-  app.config.globalProperties.$iam['permissions'] = (await import('./services/permissions.js')).default || (await import('./services/permissions.js'))
+export function registerServices(app) {
+  app.config.globalProperties.$iam.services['auth'] = auth
+  app.config.globalProperties.$iam.services['permissions'] = permissions
 }
 
 export const pages = {}

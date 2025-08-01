@@ -57,14 +57,14 @@ export default {
       this.$emit('load', 'save-user');
       return this.$http.put(this.$iam.ENDPOINTS.USERS.MY_ACCOUNT, data)
         .then(() => {
-          this.$toolcase.utils.notify({
+          this.$toolcase.services.utils.notify({
             message: "Seus dados foram salvos com sucesso.",
             type: 'positive',
             position: 'top-right'
           });
         })
         .catch((error) => {
-          this.$toolcase.utils.notifyError(error);
+          this.$toolcase.services.utils.notifyError(error);
           console.error(error);
         })
         .finally(() => {
@@ -79,7 +79,7 @@ export default {
           this.User.read(response.data)
         })
         .catch((error) => {
-          this.$toolcase.utils.notifyError(error);
+          this.$toolcase.services.utils.notifyError(error);
           console.error("An error has occurred on the attempt to retrieve user's data.", error);
         })
         .finally(() => {
@@ -89,7 +89,7 @@ export default {
   },
 
   async mounted() {
-    await this.$iam.auth.authenticate(this);
+    await this.$iam.services.auth.authenticate(this);
     this.getData();
   },
 }

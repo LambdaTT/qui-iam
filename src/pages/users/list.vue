@@ -35,9 +35,9 @@ export default {
     return {
       // Permissions:
       permissions: {
-        create: this.$iam.permissions.validatePermissions({ 'IAM_USER': 'C' }) && this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'R' }) && this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_USER': 'CUD' }),
-        update: this.$iam.permissions.validatePermissions({ 'IAM_USER': 'U' }) && this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'R' }) && this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_USER': 'CRUD' }),
-        delete: this.$iam.permissions.validatePermissions({ 'IAM_USER': 'D' }) && this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_USER': 'D' }),
+        create: this.$iam.services.permissions.validatePermissions({ 'IAM_USER': 'C' }) && this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'R' }) && this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_USER': 'CUD' }),
+        update: this.$iam.services.permissions.validatePermissions({ 'IAM_USER': 'U' }) && this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'R' }) && this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_USER': 'CRUD' }),
+        delete: this.$iam.services.permissions.validatePermissions({ 'IAM_USER': 'D' }) && this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_USER': 'D' }),
       },
 
       //  Datatable:
@@ -90,14 +90,14 @@ export default {
       var key = row.ds_key;
       this.$http.delete(`${this.$iam.ENDPOINTS.USERS.USER}/${key}`)
         .then(() => {
-          this.$toolcase.utils.notify({
+          this.$toolcase.services.utils.notify({
             message: 'O usuário foi excluído com sucesso',
             type: 'positive',
             position: 'top-right'
           })
         })
         .catch((error) => {
-          this.$toolcase.utils.notifyError(error);
+          this.$toolcase.services.utils.notifyError(error);
           console.error("An error occurred on the attempt to delete users.", error);
         })
         .finally(() => {
@@ -108,8 +108,8 @@ export default {
   },
 
   mounted() {
-    this.$iam.auth.authenticate(this);
-    if (!this.$iam.permissions.validatePermissions({ 'IAM_USER': 'R' })) this.$router.push('/forbidden');
+    this.$iam.services.auth.authenticate(this);
+    if (!this.$iam.services.permissions.validatePermissions({ 'IAM_USER': 'R' })) this.$router.push('/forbidden');
   }
 }
 

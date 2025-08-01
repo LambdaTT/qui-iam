@@ -60,7 +60,7 @@ export default {
       }
 
       if (isInvalid) {
-        this.$toolcase.utils.notify({
+        this.$toolcase.services.utils.notify({
           message: "Preencha o formulário corretamente",
           type: "negative",
           position: 'top-right'
@@ -78,14 +78,14 @@ export default {
       return this.$http.post(this.$iam.ENDPOINTS.PROFILES.PROFILE, this.input)
         .then((response) => {
           this.$router.push(`/iam/access-profiles/edit/${response.data.ds_key}`);
-          this.$toolcase.utils.notify({
+          this.$toolcase.services.utils.notify({
             message: "O novo perfil de acesso foi criado com sucesso.",
             type: 'positive',
             position: 'top-right'
           });
         })
         .catch((error) => {
-          this.$toolcase.utils.notifyError(error);
+          this.$toolcase.services.utils.notifyError(error);
           console.error(error);
         })
         .finally(() => {
@@ -95,8 +95,8 @@ export default {
   },
 
   mounted() {
-    this.$iam.auth.authenticate(this);
-    if (!this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'C' })) this.$router.push('/forbidden');
+    this.$iam.services.auth.authenticate(this);
+    if (!this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'C' })) this.$router.push('/forbidden');
   },
 
   computed: {

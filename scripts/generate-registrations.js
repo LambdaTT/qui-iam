@@ -34,26 +34,41 @@ const pages = walk(path.join(root, 'pages'),     '.vue')
 // Build import lines & registrations
 let out = []
 
-// Components
 out.push(`// AUTO GENERATED - do not edit by hand\n`)
+
+out.push('// => importing ENDPOINTS:')
+out.push(`import ENDPOINTS from './ENDPOINTS.js'\n`)
+
+out.push('// => importing services:')
+svcs.forEach(file => {
+  const rel = './' + path.relative(root, file).replace(/\\/g, '/')
+  const name = path.basename(file, '.js')
+  out.push(`import ${name} from '${rel}'`)
+})
+
+out.push('\n// => importing components:')
 comps.forEach(file => {
   const rel = './' + path.relative(root, file).replace(/\\/g, '/')
   const name = path.basename(file, '.vue')
   out.push(`import ${name} from '${rel}'`)
 })
-out.push('\nexport function registerComponents(app) {')
+
+out.push('\nexport function registerEndpoints(app) {')
+out.push('  app.config.globalProperties.$iam.ENDPOINTS = ENDPOINTS')
+out.push('}\n')
+
+out.push('export function registerComponents(app) {')
 comps.forEach(file => {
   const name = path.basename(file, '.vue')
   out.push(`  app.component('${name}', ${name})`)
 })
 out.push('}\n')
 
-// Services
-out.push('export async function registerServices(app) {')
+out.push('export function registerServices(app) {')
 svcs.forEach(file => {
   const rel = './' + path.relative(root, file).replace(/\\/g, '/')
   const name = path.basename(file, '.js')
-  out.push(`  app.config.globalProperties.$iam['${name}'] = (await import('${rel}')).default || (await import('${rel}'))`)
+  out.push(`  app.config.globalProperties.$iam.services['${name}'] = ${name}`)
 })
 out.push('}\n')
 

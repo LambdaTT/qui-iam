@@ -28,9 +28,9 @@ export default {
     return {
       // Permissions:
       permissions: {
-        create: this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'C' }),
-        update: this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'U' }) && this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_MODULE': 'CRUD' }),
-        delete: this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'D' }) && this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_MODULE': 'D' }),
+        create: this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'C' }),
+        update: this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'U' }) && this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_MODULE': 'CRUD' }),
+        delete: this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'D' }) && this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE_MODULE': 'D' }),
       },
 
       // Datatable:
@@ -75,14 +75,14 @@ export default {
       var key = row.ds_key;
       this.$http.delete(`${this.$iam.ENDPOINTS.PROFILES.PROFILE}/${key}`)
         .then(() => {
-          this.$toolcase.utils.notify({
+          this.$toolcase.services.utils.notify({
             message: 'O perfil foi excluído com sucesso',
             type: 'positive',
             position: 'top-right'
           })
         })
         .catch((error) => {
-          this.$toolcase.utils.notifyError(error);
+          this.$toolcase.services.utils.notifyError(error);
           console.error("An error occurred on the attempt to delete accessprofile.", error);
         })
         .finally(() => {
@@ -94,8 +94,8 @@ export default {
   },
 
   mounted() {
-    this.$iam.auth.authenticate(this);
-    if (!this.$iam.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'R' })) this.$router.push('/forbidden');
+    this.$iam.services.auth.authenticate(this);
+    if (!this.$iam.services.permissions.validatePermissions({ 'IAM_ACCESSPROFILE': 'R' })) this.$router.push('/forbidden');
   }
 }
 

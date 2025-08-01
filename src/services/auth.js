@@ -1,5 +1,5 @@
 import { http, eventbroadcaster, utils } from '@lambdatt-qui/toolcase'
-import ENDPOINTS from './ENDPOINTS.js';
+import ENDPOINTS from '../ENDPOINTS.js';
 
 export default {
   loggedUser: null,
