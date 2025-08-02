@@ -1,4 +1,4 @@
-import { http, eventbroadcaster, utils } from '@lambdatt-qui/toolcase'
+import { http, eventbroadcaster, utils } from '@lambdatt/qui-toolcase'
 import ENDPOINTS from '../ENDPOINTS.js';
 
 export default {

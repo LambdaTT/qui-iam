@@ -1,4 +1,4 @@
-import { http, utils } from '@lambdatt-qui/toolcase'
+import { http, utils } from '@lambdatt/qui-toolcase'
 import ENDPOINTS from '../ENDPOINTS.js';
 
 const REQUIRE_ALL = 1; // All permissions must be granted
